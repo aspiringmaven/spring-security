@@ -1,24 +1,39 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-xmlns:security="http://www.springframework.org/schema/security"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security.xsd">
-
-	<security:http pattern="/" security="none"/>
-	<security:http pattern="/home" security="none"/>
-	<security:http  auto-config="false" use-expressions="false">
-		<security:intercept-url pattern="/**" access="ROLE_USER" />
-		<security:http-basic />
+	
+	
+	<security:http  use-expressions="true" >
+	  
+	  <security:intercept-url pattern="/login/form*" access="permitAll"/>
+      <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+	  	
+		<security:form-login 
+			login-page="/login/form"
+			default-target-url="/home"
+			authentication-failure-url="/login/form?error"
+			username-parameter="username"
+			password-parameter="password"/>
+			
+		<security:logout
+			logout-url="/logout"
+			logout-success-url="/login/form?logout"/>
+			
+		<security:csrf/>
 	</security:http>
 
 	<security:authentication-manager>
 		<security:authentication-provider>
 			<security:user-service>
-				<security:user name="aspiringmaven" password="codegyan" authorities="ROLE_USER" />
+				<security:user name="aspiringmaven" password="codegyan"
+					authorities="ROLE_USER" />
 			</security:user-service>
 		</security:authentication-provider>
-	</security:authentication-manager>	
+	</security:authentication-manager>
+	
 
 </beans>

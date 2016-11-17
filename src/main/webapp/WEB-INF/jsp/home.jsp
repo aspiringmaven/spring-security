@@ -8,5 +8,12 @@
 </head>
 <body>
 Hay! You are watching Spring security boot page.
+<br><br>
+<form action="/spring-security/logout" method="POST">
+<input type="hidden"
+		name="${_csrf.parameterName}"
+		value="${_csrf.token}" />
+		<input type="submit">logOut Here</form>
+
 </body>
 </html>
